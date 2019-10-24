@@ -1,5 +1,6 @@
 import random
 import time
+import argparse
 
 def printState(state, *, live="*", dead="."):
   for row in state:
@@ -55,7 +56,19 @@ def nextState(state):
   return [[nextCellState(i, j, state) for j in range(M)] for i in range(N)]
 
 
-state = readState("state.txt")
+parser = argparse.ArgumentParser(description="Conway's Game of Life")
+parser.add_argument("file", nargs='?', default=None, help="File describing initial state."
+  + " To describe initial state of the NxM grid the file "
+  + " should contain N lines with M symbols '*' or '.' in each. "
+  + " Star '*' stands for a live sell and dot '.' stands for a dead sell."
+  + " Trailing whitespaces and empty lines are ignored."
+  + " Example: https://github.com/Oktosha/game-of-life/blob/master/state.txt")
+args = parser.parse_args()
+
+if args.file:
+  state = readState(args.file)
+else:
+  state = generateState()
 
 while True:
   printState(state)
